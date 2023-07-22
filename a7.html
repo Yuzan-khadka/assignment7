@@ -1,0 +1,111 @@
+<html>
+<font size="8" color="green">Final test lab</font><br><br>
+Number of rows: <input type="text" id="t1" /><br><br>
+Number of cols: <input type="text" id="t2" /><br><br>
+
+<button id="b1" onclick="generateTable()">Generate Table</button>
+<br><br>
+
+<button id="b2" onclick="addColumn()">Add Column</button>
+
+<button id="b3" onclick="addRow()">Add Row</button>
+
+<div id="table"></div>
+
+<script language="javascript">
+
+	//Your code goes here
+
+	let $ = function (id) {
+		return document.getElementById(id);
+	};
+
+	let hideElement = function(id){
+		return $(id).style.display = "none";
+	}
+
+	let rowsNum = $('t1');
+	let colsNum = $('t2');
+	let currentColsNum = 0;
+
+	let generateTable = function () {
+		let rows = chkNum(rowsNum.value);
+		let cols = chkNum(colsNum.value);
+
+		if (rows > 0 && cols > 0) {
+			createTable(rows, cols);
+			currentColsNum = cols;
+			hideElement('t1');
+			hideElement('t2');
+			hideElement('b1');
+			document.querySelector('body').childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              const text = node.textContent.trim();
+              if (text === "Number of rows:" || text === "Number of cols:") {
+                node.textContent = "";
+              }
+            }
+          });
+		} else {
+			rowsNum.value = '';
+			colsNum.value = '';
+			alert("Invalid values");
+		}
+	};
+
+	function addColumn() {
+		let tb = $("myTable");
+		currentColsNum++;
+		for (let row = 0; row < tb.rows.length; row++) {
+			let rowCell = tb.rows[row].insertCell(currentColsNum - 1);
+			rowCell.style.border = "1px solid green";
+			rowCell.style.borderCollapse = "collapse"; 
+			rowCell.style.width = "70px";
+			rowCell.style.height = "70px";
+		}
+	}
+	function addRow() {
+		let tb = $("myTable");
+		let rowCell = tb.insertRow(tb.rows.length);
+		for (let col = 0; col < currentColsNum; col++) {
+			let colCell = rowCell.insertCell(col);
+			colCell.style.border = "1px solid green";
+			colCell.style.borderCollapse = "collapse"; 
+			colCell.style.width = "70px";
+			colCell.style.height = "50px";
+		}
+	}
+
+	function createTable(rows, cols) {
+		let tbl = document.createElement("TABLE");
+		tbl.setAttribute("id", "myTable");
+		tbl.style.border = "1px solid green";
+		tbl.style.borderCollapse = 'collapse';
+		tbl.style.marginTop = "50px";
+		document.body.appendChild(tbl);
+		for (let row = 0; row < rows; row++) {
+			let rowCell = $("myTable").insertRow(row);
+			for (let col = 0; col < cols; col++) {
+				let colCell = rowCell.insertCell(col);
+				colCell.style.border = "1px solid green";
+				colCell.style.width = "70px";
+				colCell.style.height = "50px";
+			}
+		}
+	}
+
+	function chkNum(value) {
+		let num = parseInt(value);
+		console.log(num);
+		if (isNaN(num)) {
+			return 0;
+		} else {
+			return num;
+		}
+	}
+
+
+
+</script>
+
+</html>
